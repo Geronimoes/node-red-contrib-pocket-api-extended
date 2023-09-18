@@ -1,13 +1,13 @@
-# node-red-contrib-pocket-api
+# node-red-contrib-pocket-api-extended
 
-The node using Pocket API.
-
-
-## Install
-
-npm install node-red-contrib-pocket-api
+An extension of the Node-RED node written by VNXtreme. This node authenticates and calls the Pocket API to retrieve items. This extended version allows more parameters that are available in the [Pocket API](https://getpocket.com/developer/).
 
 
-## Setup Consumer key
+<!-- ## Install
 
-Follow <a href="https://getpocket.com/developer/docs/authentication" target="_blank">this guide</a> to retrieve your Consumer key
+npm install node-red-contrib-pocket-api -->
+
+
+## Obtaining a Consumer key
+
+Follow [this guide](https://getpocket.com/developer/docs/authentication) to retrieve your Consumer key
