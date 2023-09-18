@@ -132,11 +132,11 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('get-pocket', {
+    RED.nodes.registerType('get-pocket-extended', {
         category: 'box',
         color: "#ff9c87",
         defaults: {
-            pocket: { type: "pocket-auth", required: true },
+            pocket: { type: "pocket-auth-extended", required: true },
             search: { value: "" },
             tag: { value: false },
             state: { value: "all" },
