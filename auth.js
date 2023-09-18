@@ -12,7 +12,7 @@ module.exports = function (RED) {
       }
     });
   }
-  RED.nodes.registerType("pocket-auth", PocketNode, {
+  RED.nodes.registerType("pocket-auth-extended", PocketNode, {
     credentials: {
       consumerKey: { type: "password", required: true },
       displayName: { type: "text" }
