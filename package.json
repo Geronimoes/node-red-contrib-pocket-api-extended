@@ -13,7 +13,7 @@
   ],
   "node-red": {
     "nodes": {
-      "auth-extended": "auth.js",
+      "pocket-auth-extended": "auth.js",
       "get-pocket-extended": "get-pocket.js",
       "add-pocket-extended": "add-pocket.js"
     }
