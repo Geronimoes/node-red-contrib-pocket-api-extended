@@ -1,13 +1,15 @@
 {
-  "name": "node-red-contrib-pocket-api",
-  "version": "0.0.11",
-  "description": "Node use Pocket API",
+  "name": "node-red-contrib-pocket-api-extended",
+  "version": "0.2.0",
+  "description": "An extended Node-RED node for interfacing with the Pocket API, offering more parameters and flexibility.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "node-red",
-    "pocket"
+    "pocket",
+    "extended",
+    "API parameters"
   ],
   "node-red": {
     "nodes": {
@@ -17,14 +19,21 @@
     }
   },
   "author": {
-    "name": "Xtreme",
-    "email": "nghoang2013@gmail.com",
-    "url": "https://github.com/VNXtreme"
+    "name": "Geronimoes",
+    "email": "jeroenm@gmail.com",
+    "url": "https://github.com/Geronimoes"
   },
+  "contributors": [
+    {
+      "name": "Xtreme",
+      "email": "nghoang2013@gmail.com",
+      "url": "https://github.com/VNXtreme"
+    }
+  ],
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VNXtreme/node-red-contrib-pocket-api"
+    "url": "git+https://github.com/Geronimoes/node-red-contrib-pocket-api-extended"
   },
   "dependencies": {
     "axios": "^0.21.1"
