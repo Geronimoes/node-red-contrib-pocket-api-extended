@@ -69,7 +69,7 @@ module.exports = function (RED) {
     });
   }
 
-  RED.nodes.registerType('get-pocket', getPocket);
+  RED.nodes.registerType('get-pocket-extended', getPocket);
 
   async function getList(params) {
     let { data } = await axios.get('https://getpocket.com/v3/get', { params: params });
