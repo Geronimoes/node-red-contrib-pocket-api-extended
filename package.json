@@ -13,9 +13,9 @@
   ],
   "node-red": {
     "nodes": {
-      "auth": "auth.js",
-      "get-pocket": "get-pocket.js",
-      "add-pocket": "add-pocket.js"
+      "auth-extended": "auth.js",
+      "get-pocket-extended": "get-pocket.js",
+      "add-pocket-extended": "add-pocket.js"
     }
   },
   "author": {
