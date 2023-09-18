@@ -11,3 +11,6 @@ npm install node-red-contrib-pocket-api -->
 ## Obtaining a Consumer key
 
 Follow [this guide](https://getpocket.com/developer/docs/authentication) to retrieve your Consumer key
+
+## Possible roadmap
+- Add an option to use relative time ('since' parameter) as Node-RED values.
