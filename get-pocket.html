@@ -133,7 +133,7 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('get-pocket', {
-        category: 'Pocket API Extended',
+        category: 'box',
         color: "#ff9c87",
         defaults: {
             pocket: { type: "pocket-auth", required: true },
@@ -148,10 +148,10 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "pocket.png",
+        icon: "pocket-xtd-get.png",
         align: "left",
-        label: 'Get items from Pocket',
-        paletteLabel: 'Get Pocket',
+        label: 'Get from Pocket',
+        paletteLabel: 'Retrieve items from Pocket',
         oneditprepare: function () {
             
             // Toggling the "Since" input fields
