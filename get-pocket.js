@@ -6,7 +6,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, n);
 
     this.pocket = RED.nodes.getNode(n.pocket);
-    
+
     if (!this.pocket.credentials.accessToken) {
       this.status({ fill: "red", shape: "ring", text: "error.no-access-token" });
       return;
@@ -19,7 +19,9 @@ module.exports = function (RED) {
         useTag = msg.tag || n.tag,
         sort = msg.sort || n.sort,
         detailType = msg.detailType || n.detailType,
-        state = msg.state || n.state || "unread";
+        state = msg.state || n.state || "all",
+        sinceType = msg.sinceType || n.sinceType,
+        sinceValue = msg.sinceValue || n.sinceValue;
 
       let params = {
         consumer_key: this.pocket.credentials.consumerKey,
@@ -27,12 +29,35 @@ module.exports = function (RED) {
         sort,
         detailType,
         state
-      }
+      };
 
+      // Handling 'since' parameter based on 'sinceType'
+      if (sinceType === "timestamp") {
+        params = { ...params, since: sinceValue };
+      } else if (sinceType === "relative") {
+        // Calculating Unix timestamp based on relative time
+        let currentTimestamp = Math.floor(Date.now() / 1000);
+        let unit = msg.sinceUnit || n.sinceUnit;
+
+        switch (unit) {
+          case "minutes":
+            currentTimestamp -= sinceValue * 60;
+            break;
+          case "hours":
+            currentTimestamp -= sinceValue * 60 * 60;
+            break;
+          case "days":
+            currentTimestamp -= sinceValue * 60 * 60 * 24;
+            break;
+        }
+        params = { ...params, since: currentTimestamp };
+      }
+      
+      // Handling 'tag' or 'search' parameter
       if (useTag) {
-        params = { ...params, tag: searchKey }
+        params = { ...params, tag: searchKey };
       } else {
-        params = { ...params, search: searchKey }
+        params = { ...params, search: searchKey };
       }
 
       try {
@@ -42,7 +67,7 @@ module.exports = function (RED) {
         node.send(msg);
         node.status({ fill: "green", shape: "ring", text: "success.get-list" });
       } catch (error) {
-        node.error('Error:', error.response.data)
+        node.error('Error:', error.response.data);
         node.status({ fill: "red", shape: "dot", text: "error.get-list" });
         return;
       }
