@@ -133,27 +133,28 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('get-pocket', {
-        category: 'box',
-        color: "#EEE",
+        category: 'Pocket API Extended',
+        color: "#ff9c87",
         defaults: {
             pocket: { type: "pocket-auth", required: true },
             search: { value: "" },
             tag: { value: false },
-            state: { value: 'all' },
+            state: { value: "all" },
             sort: { value: "newest" },
             detailType: { value: "simple" },
-            // Add default values for the new fields here
             sinceType: { value: "timestamp" },
             sinceValue: { value: "" },
+            sinceUnit: { value: "days" }
         },
         inputs: 1,
         outputs: 1,
         icon: "pocket.png",
         align: "left",
-        label: 'Get Pocket',
+        label: 'Get items from Pocket',
         paletteLabel: 'Get Pocket',
         oneditprepare: function () {
-            // Existing code for toggling the "Since" input fields
+            
+            // Toggling the "Since" input fields
             $("#node-input-sinceType").change(function() {
                 if ($(this).val() === "timestamp") {
                     $("#sinceTimestampRow").show();
@@ -165,7 +166,8 @@
             });
         },
         oneditsave: function () {
-            // New code to convert relative time to Unix timestamp
+            
+            // Convert relative time to Unix timestamp
             if ($("#node-input-sinceType").val() === "relative") {
                 const value = $("#node-input-sinceRelative").val();
                 const unit = $("#node-input-sinceUnit").val();
