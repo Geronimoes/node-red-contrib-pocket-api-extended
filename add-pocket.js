@@ -57,7 +57,7 @@ module.exports = function (RED) {
       }
     });
   }
-  RED.nodes.registerType("add-pocket", addPocket);
+  RED.nodes.registerType("add-pocket-extended", addPocket);
 
   async function addList(body) {
     let { data } = await axios.post("https://getpocket.com/v3/add", body);
