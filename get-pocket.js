@@ -1,27 +1,27 @@
 module.exports = function (RED) {
-  "use strict";
+  'use strict';
   const axios = require('axios');
 
   function getPocket(n) {
     RED.nodes.createNode(this, n);
-
     this.pocket = RED.nodes.getNode(n.pocket);
 
     if (!this.pocket.credentials.accessToken) {
-      this.status({ fill: "red", shape: "ring", text: "error.no-access-token" });
+      this.status({ fill: 'red', shape: 'ring', text: 'error.no-access-token' });
       return;
     }
 
     let node = this;
 
-    node.on("input", async function (msg) {
-      let searchKey = msg.search || n.search,
-        useTag = msg.tag || n.tag,
-        sort = msg.sort || n.sort,
-        detailType = msg.detailType || n.detailType,
-        state = msg.state || n.state || "all",
-        sinceType = msg.sinceType || n.sinceType,
-        sinceValue = msg.sinceValue || n.sinceValue;
+    node.on('input', async function (msg) {
+      let searchKey = msg.search || n.search;
+      let useTag = msg.tag || n.tag;
+      let sort = msg.sort || n.sort;
+      let detailType = msg.detailType || n.detailType;
+      let state = msg.state || n.state || 'all';
+      let sinceType = msg.sinceType || n.sinceType;
+      let sinceValue = msg.sinceValue || n.sinceValue;
+      let sinceUnit = msg.sinceUnit || n.sinceUnit;
 
       let params = {
         consumer_key: this.pocket.credentials.consumerKey,
@@ -32,27 +32,24 @@ module.exports = function (RED) {
       };
 
       // Handling 'since' parameter based on 'sinceType'
-      if (sinceType === "timestamp") {
-        params = { ...params, since: sinceValue };
-      } else if (sinceType === "relative") {
-        // Calculating Unix timestamp based on relative time
-        let currentTimestamp = Math.floor(Date.now() / 1000);
-        let unit = msg.sinceUnit || n.sinceUnit;
-
-        switch (unit) {
-          case "minutes":
-            currentTimestamp -= sinceValue * 60;
+      if (sinceType === 'relative' && sinceValue) {
+        let timestamp = Math.floor(Date.now() / 1000);
+        switch (sinceUnit) {
+          case 'minutes':
+            timestamp -= sinceValue * 60;
             break;
-          case "hours":
-            currentTimestamp -= sinceValue * 60 * 60;
+          case 'hours':
+            timestamp -= sinceValue * 60 * 60;
             break;
-          case "days":
-            currentTimestamp -= sinceValue * 60 * 60 * 24;
+          case 'days':
+            timestamp -= sinceValue * 60 * 60 * 24;
             break;
         }
-        params = { ...params, since: currentTimestamp };
+        params = { ...params, since: timestamp };
+      } else if (sinceValue) {
+        params = { ...params, since: sinceValue };
       }
-      
+
       // Handling 'tag' or 'search' parameter
       if (useTag) {
         params = { ...params, tag: searchKey };
@@ -62,22 +59,20 @@ module.exports = function (RED) {
 
       try {
         let data = await getList(params);
-
         msg.payload = data;
         node.send(msg);
-        node.status({ fill: "green", shape: "ring", text: "success.get-list" });
+        node.status({ fill: 'green', shape: 'ring', text: 'success.get-list' });
       } catch (error) {
-        node.error('Error:', error.response.data);
-        node.status({ fill: "red", shape: "dot", text: "error.get-list" });
-        return;
+        node.error(`Error: ${JSON.stringify(error)}`);
+        node.status({ fill: 'red', shape: 'dot', text: 'error.get-list' });
       }
     });
   }
-  RED.nodes.registerType("get-pocket", getPocket);
+
+  RED.nodes.registerType('get-pocket', getPocket);
 
   async function getList(params) {
-    let { data } = await axios.get("https://getpocket.com/v3/get", { params: params });
-
+    let { data } = await axios.get('https://getpocket.com/v3/get', { params: params });
     return data;
   }
-};
+}
