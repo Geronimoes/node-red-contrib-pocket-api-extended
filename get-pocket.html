@@ -1,56 +1,72 @@
 <script type="text/x-red" data-template-name="get-pocket">
+    <!-- Pocket Input -->
     <div class="form-row">
         <label for="node-input-pocket"><i class="fa fa-user"></i> Pocket</label>
         <input type="text" id="node-input-pocket">
     </div>
+
+    <!-- Search Input -->
     <div class="form-row">
-        <label for="node-input-search"><i class="fa fa-search"></i> Search</label>
-        <input type="text" id="node-input-search">
+        <label for="node-input-search"><i class="fa fa-search"></i> Search (optional)</label>
+        <input type="text" id="node-input-search" placeholder="Enter search query">
+        <small>Retrieve only items whose title or url contain the search string.</small>
     </div>
+
+    <!-- Tag Checkbox -->
     <div class="form-row">
         <label for="node-input-tag"><i class="fa fa-tag"></i> Search tag</label>
         <input type="checkbox" id="node-input-tag" style="display: inline-block; width: auto; vertical-align: top;">
-        <code>(Only complete matches are returned)</code>
+        <small>(Only complete and exact matches with existing tags are returned)</small>
     </div>
+
+    <!-- State Dropdown -->
     <div class="form-row">
         <label for="node-input-state"><i class="fa fa-filter"></i> State</label>
         <select id="node-input-state" style="width: 70%">
             <option value="unread">Unread</option>
             <option value="archive">Archive</option>
-            <option value="all">All</option>
+            <option value="all" selected>All</option>
         </select>
+        <small>Retrieve only unread items, only archived items, or all values (default).</small>
     </div>
+
+    <!-- Sort Dropdown -->
     <div class="form-row">
         <label for="node-input-sort"><i class="fa fa-sort"></i> Sort</label>
         <select id="node-input-sort" style="width: 70%">
-            <option value="newest">Newest</option>
+            <option value="newest" selected>Newest</option>
             <option value="oldest">Oldest</option>
             <option value="title">Title</option>
             <option value="site">Site</option>
         </select>
+        <small>In what order should items be retrieved?</small>
     </div>
+
+    <!-- DetailType Dropdown -->
     <div class="form-row">
-        <label for="node-input-detailType"><i class="fa fa-filter"></i> DetailType</label>
+        <label for="node-input-detailType"><i class="fa fa-filter"></i> Detail</label>
         <select id="node-input-detailType" style="width: 70%">
-            <option value="simple" selected="true">Simple</option>
+            <option value="simple" selected>Simple</option>
             <option value="complete">Complete</option>
         </select>
+        <small>Simple: basic info like title, url, status, and more. Complete: all info, including tags, images, authors, videos, and more.</small>
     </div>
 
     <!-- Since Type Dropdown -->
     <div class="form-row">
-        <label for="node-input-sinceType"><i class="fa fa-clock"></i> Since Type</label>
+        <label for="node-input-sinceType"><i class="fa fa-clock"></i> Items since (optional)</label>
         <select id="node-input-sinceType" style="width: 70%">
-            <option value="timestamp">Unix Timestamp</option>
+            <option value="timestamp" selected>Unix Timestamp</option>
             <option value="relative">Relative Time</option>
         </select>
+        <small>Only retrieve items that were modified since a certain time.</small>
     </div>
     
     <!-- Since Timestamp Input -->
     <div class="form-row" id="sinceTimestampRow">
         <label for="node-input-since"><i class="fa fa-clock"></i> Since (Unix timestamp)</label>
-        <input type="text" id="node-input-since" placeholder="Optional" pattern="\d+">
-        <small>Only numbers are allowed.</small>
+        <input type="number" id="node-input-since" placeholder="Optional">
+        <small>Unix timestamp: seconds since 1 January 1970 (UTC), e.g. 1695037786 (only numbers allowed).</small>
     </div>
     
     <!-- Since Relative Time Input -->
@@ -62,6 +78,7 @@
             <option value="hours">Hours</option>
             <option value="days">Days</option>
         </select>
+        <small>Retrieve only items that were added to Pocket in the last xxx minutes/hours/days.</small>
     </div>
 </script>
 
@@ -122,7 +139,7 @@
             pocket: { type: "pocket-auth", required: true },
             search: { value: "" },
             tag: { value: false },
-            state: { value: 'unread' },
+            state: { value: 'all' },
             sort: { value: "newest" },
             detailType: { value: "simple" },
             // Add default values for the new fields here
