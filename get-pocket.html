@@ -36,6 +36,33 @@
             <option value="complete">Complete</option>
         </select>
     </div>
+
+    <!-- Since Type Dropdown -->
+    <div class="form-row">
+        <label for="node-input-sinceType"><i class="fa fa-clock"></i> Since Type</label>
+        <select id="node-input-sinceType" style="width: 70%">
+            <option value="timestamp">Unix Timestamp</option>
+            <option value="relative">Relative Time</option>
+        </select>
+    </div>
+    
+    <!-- Since Timestamp Input -->
+    <div class="form-row" id="sinceTimestampRow">
+        <label for="node-input-since"><i class="fa fa-clock"></i> Since (Unix timestamp)</label>
+        <input type="text" id="node-input-since" placeholder="Optional" pattern="\d+">
+        <small>Only numbers are allowed.</small>
+    </div>
+    
+    <!-- Since Relative Time Input -->
+    <div class="form-row" id="sinceRelativeRow" style="display:none;">
+        <label for="node-input-sinceRelative"><i class="fa fa-clock"></i> Last X</label>
+        <input type="number" id="node-input-sinceRelative" placeholder="Enter value">
+        <select id="node-input-sinceUnit">
+            <option value="minutes">Minutes</option>
+            <option value="hours">Hours</option>
+            <option value="days">Days</option>
+        </select>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="get-pocket">
@@ -66,6 +93,16 @@
             <span class="property-type">string</span>
         </dt>
         <dd>Accept: unread | archive | all. Default is `unread`</dd>
+           
+        <dt>sinceType
+            <span class="property-type">string</span>
+        </dt>
+        <dd>Accept: timestamp | relative. Specifies the type of 'Since' value.</dd>
+        
+        <dt>since
+            <span class="property-type">string | number</span>
+        </dt>
+        <dd>If 'sinceType' is 'timestamp', expects a Unix timestamp. If 'sinceType' is 'relative', expects a number and a time unit (minutes, hours, days).</dd>
     </dl>
 
     <h3>Outputs</h3>
@@ -88,6 +125,9 @@
             state: { value: 'unread' },
             sort: { value: "newest" },
             detailType: { value: "simple" },
+            // Add default values for the new fields here
+            sinceType: { value: "timestamp" },
+            sinceValue: { value: "" },
         },
         inputs: 1,
         outputs: 1,
@@ -96,10 +136,39 @@
         label: 'Get Pocket',
         paletteLabel: 'Get Pocket',
         oneditprepare: function () {
-
+            // Existing code for toggling the "Since" input fields
+            $("#node-input-sinceType").change(function() {
+                if ($(this).val() === "timestamp") {
+                    $("#sinceTimestampRow").show();
+                    $("#sinceRelativeRow").hide();
+                } else {
+                    $("#sinceTimestampRow").hide();
+                    $("#sinceRelativeRow").show();
+                }
+            });
         },
         oneditsave: function () {
-
+            // New code to convert relative time to Unix timestamp
+            if ($("#node-input-sinceType").val() === "relative") {
+                const value = $("#node-input-sinceRelative").val();
+                const unit = $("#node-input-sinceUnit").val();
+                let timestamp = Math.floor(Date.now() / 1000); // Current Unix timestamp
+                
+                switch(unit) {
+                    case "minutes":
+                        timestamp -= value * 60;
+                        break;
+                    case "hours":
+                        timestamp -= value * 60 * 60;
+                        break;
+                    case "days":
+                        timestamp -= value * 60 * 60 * 24;
+                        break;
+                }
+                
+                // Store the converted timestamp in node-input-since
+                $("#node-input-since").val(timestamp);
+            }
         }
     });
 </script>
