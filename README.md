@@ -1,3 +1,5 @@
+# <em>NOTE: This fork is currently under development and may not work as expected!</em>
+
 # node-red-contrib-pocket-api-extended
 
 An extension of the Node-RED node written by VNXtreme. This node authenticates and calls the Pocket API to retrieve items. This extended version allows more parameters that are available in the [Pocket API](https://getpocket.com/developer/).
